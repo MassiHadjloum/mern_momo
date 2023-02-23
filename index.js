@@ -3,16 +3,19 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import mongoose from "mongoose";
 import 'colors';
+import postRouts from './routes/posts.js';
 
 
-const app = express() 
+const app = express()
 
+app.use('/posts', postRouts)
 app.use(bodyParser.json({ limit: '30mb', extended: true }))
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))
 app.use(cors())
 
 const CONNEXION_URL = "mongodb+srv://massi:massi@cluster0.dbdjjuf.mongodb.net/?retryWrites=true&w=majority"
 const PORT = process.env.PORT || 5001;
+
 
 mongoose.set('strictQuery', false)
 mongoose.connect(CONNEXION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
