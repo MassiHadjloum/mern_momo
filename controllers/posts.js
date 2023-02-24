@@ -26,7 +26,8 @@ export const createPost = (req, res) => {
 export const updatePost = (req, res) => {
   const {id: _id} = req?.params
   const post = req?.body
-  if(mongoose.Types.ObjectId.isValid(_id)) return res.status(404).json({messag: `No post with id ${_id}`})
+  console.log("update ", _id);
+  if(!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).json({messag: `No post with id ${_id}`})
   
   // add { new: true} to have the updated object from database
   PostMessage.findByIdAndUpdate(_id, post, {new: true})
