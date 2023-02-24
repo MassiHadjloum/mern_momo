@@ -26,10 +26,14 @@ export const createPost = (req, res) => {
 export const updatePost = (req, res) => {
   const {id: _id} = req?.params
   const post = req?.body
-  console.log("update ", _id);
   if(!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).json({messag: `No post with id ${_id}`})
-  
   // add { new: true} to have the updated object from database
   PostMessage.findByIdAndUpdate(_id, post, {new: true})
   .then((response) => res?.status(202).json(response))
+}
+export const deletePost = (req, res) => {
+  const {id: _id} = req?.params
+  if(!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).json({messag: `No post with id ${_id}`})
+  PostMessage.findByIdAndDelete(_id)
+  .then((response) => res?.status(200).json({message: `Post with id ${_id} has benn deleted.`}))
 }
