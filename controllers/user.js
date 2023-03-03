@@ -11,9 +11,8 @@ export const signInUser = async (req, res) => {
 
     const isPassword = await bcrypt.compare(password, user?.password)
     if (!isPassword) return res.status(400).json({ message: 'incorrect password' })
-    console.log("user ", isPassword);
     const token = jwt.sign({ email: user?.email, id: user?._id }, 'test', { expiresIn: '1h' })
-    return res.status(200).json({ result: { user, token } })
+    return res.status(200).json({ data: { result: user, token: token } })
   } catch (err) {
     res.status(500).json({ message: 'something went wrong!!!' })
   }
@@ -29,7 +28,7 @@ export const signUpUser = async (req, res) => {
     const hashedPass = await bcrypt.hash(password, 12)
     const newUser = await User.create({ email, password: hashedPass, name: `${firstName} ${lastName}` })
     const token = jwt.sign({ email: newUser?.email, id: newUser?._id }, 'test', { expiresIn: '1h' })
-    res.json(200).json({ result: { newUser, token } })
+    return res.status(200).json({ data: { result: newUser, token: token } })
   } catch (err) {
     res.status(500).json({ message: 'something went wrong!!!' })
   }
