@@ -14,7 +14,7 @@ export const getPosts = (req, res) => {
 
 export const createPost = (req, res) => {
   const post = req.body
-  const newPost = new PostMessage(post)
+  const newPost = new PostMessage({...post, creator: req?.userid, createAt: new Date()?.toISOString()})
   newPost.save().then((response) => {
     res.status(201).json({ data: newPost })
   })
