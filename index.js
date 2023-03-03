@@ -3,7 +3,8 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import mongoose from "mongoose";
 import 'colors';
-import postRouts from './routes/posts.js';
+import postRoutes from './routes/posts.js';
+import userRoutes from './routes/user.js';
 import dotenv from 'dotenv'
 
 
@@ -13,7 +14,8 @@ dotenv.config()
 app.use(bodyParser.json({ limit: '30mb', extended: true }))
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))
 app.use(cors())
-app.use('/posts', postRouts)
+app.use('/posts', postRoutes)
+app.use('/user', userRoutes)
 
 // const CONNEXION_URL = "mongodb+srv://massi:massi@cluster0.dbdjjuf.mongodb.net/?retryWrites=true&w=majority"
 const PORT = process?.env?.PORT || 5001;
