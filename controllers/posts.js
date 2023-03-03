@@ -4,7 +4,6 @@ import PostMessage from "../models/postMessage.js"
 
 export const getPosts = (req, res) => {
   PostMessage.find().then((response) => {
-    console.log(response);
     res.status(200).json({ response })
   })
     .catch((err) => {
