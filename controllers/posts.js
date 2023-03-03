@@ -41,14 +41,25 @@ export const deletePost = (req, res) => {
 
 export const likePost = (req, res) => {
   const { id: _id } = req?.params
-  const likeCount = req?.body
+  // const likeCount = req?.body
+  if (!req?.userId) return res.json({ message: 'Unautenticated' })
   if (!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).json({ messag: `No post with id ${_id}` })
   // add { new: true} to have the updated object from database
-  const post = PostMessage.findById(_id)
-    .then((response) => PostMessage.findByIdAndUpdate(_id, { likeCount: response?.likeCount + 1 },
-      { new: true })
-      .then((response) => res.json(response))
-      .catch((err) => res.json({ message: 'An error has occured while liking a post' }))
+  PostMessage.findById(_id)
+    .then((post) => {
+      const index = post?.likes.findIndex((id) => id === String(req?.userId))
+      if(index === -1) {
+        // ? like a post
+        post?.likes?.push(req?.userId)
+      } else {
+        // ? dislike a post
+        post?.likes?.splice(index, 1)
+      }
+      PostMessage.findByIdAndUpdate(_id, post,
+        { new: true })
+        .then((post) => res.json(post))
+        .catch((err) => res.json({ message: 'An error has occured while liking a post' }))
+    }
     )
 
 
